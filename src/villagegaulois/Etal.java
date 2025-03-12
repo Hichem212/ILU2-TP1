@@ -1,5 +1,6 @@
 package villagegaulois;
 
+import personnages.Chef;
 import personnages.Gaulois;
 
 public class Etal {
@@ -12,7 +13,8 @@ public class Etal {
 	public boolean isEtalOccupe() {
 		return etalOccupe;
 	}
-
+	
+	
 	public Gaulois getVendeur() {
 		return vendeur;
 	}
@@ -38,17 +40,24 @@ public class Etal {
 	}
 
 	public int acheterProduit(int quantiteAcheter) {
-		if (quantite == 0) {
-			quantiteAcheter = 0;
-		}
-		if (quantiteAcheter > quantite) {
-			quantiteAcheter = quantite;
-		}
-		if (etalOccupe) {
-			quantite -= quantiteAcheter;
-		}
-		return quantiteAcheter;
+	    // Original method logic
+	    if (quantite == 0) {
+	        quantiteAcheter = 0;
+	    }
+	    if (quantiteAcheter > quantite) {
+	        quantiteAcheter = quantite;
+	    }
+	    if (etalOccupe) {
+	        quantite -= quantiteAcheter;
+	    }
+	    return quantiteAcheter;
 	}
+
+	public int acheterProduit(int quantiteAcheter, Gaulois gaulois) {
+	    // Specific logic for Gaulois type
+	    return acheterProduit(quantiteAcheter); // Optional: reuse existing logic
+	}
+
 
 	public void libererEtal() {
 		etalOccupe = false;
@@ -74,5 +83,7 @@ public class Etal {
 	        return "Cet étal est vide.";
 	    }
 	}
+
+	
 
 }

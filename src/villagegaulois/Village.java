@@ -65,40 +65,52 @@ public class Village {
 	}
 
 	
-	public int installerVendeur(Gaulois vendeur, String produit,
-			int nbProduit) {
-		int indiceEtal = marche.trouverEtalLibre();
-		if (indiceEtal >= 0) {
-			marche.utiliserEtal(indiceEtal, vendeur, produit, nbProduit);
-		}
-		return indiceEtal;
+	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
+	    int indiceEtal = marche.trouverEtalLibre();
+	    if (indiceEtal >= 0) {
+	        marche.utiliserEtal(indiceEtal, vendeur, produit, nbProduit);
+	        return "Le vendeur " + vendeur.getNom() + " vend des " + produit + " à l'étal n° " + indiceEtal + ".";
+	    } else {
+	        return vendeur.getNom() + " cherche un endroit pour vendre " + nbProduit + " " + produit + ".";
+	    }
 	}
 
+
 	public void partirVendeur(Gaulois vendeur) {
-		Etal etal = marche.trouverVendeur(vendeur);
-		if (etal != null) {
-			etal.libererEtal();
-		}
+	    Etal etal = marche.trouverVendeur(vendeur);
+	    if (etal != null && etal.isEtalOccupe()) {
+	        int quantiteVendue = etal.getQuantite();
+	    
+	        etal.libererEtal();
+	        System.out.println("Le vendeur " + vendeur.getNom() 
+	            + " quitte son étal, il a vendu " + quantiteVendue 
+	            + " " + etal.getProduit() + " parmi les "  + " qu'il voulait vendre.");
+	    }
 	}
+
 
 	public boolean rechercherEtalVide() {
 		return marche.trouverEtalLibre() != -1;
 	}
 
 	public String rechercherVendeursProduit(String produit) {
-		Gaulois[] vendeurs = null;
-		Etal[] etalsProduit = marche.trouverEtals(produit);
-		if (etalsProduit == null) {
-			System.out.println("il n'y a pas de vendeur qui propose des " + produit + "au marché");
-		}
-		else if (etalsProduit != null) {
-			vendeurs = new Gaulois[etalsProduit.length];
-			for (int i = 0; i < etalsProduit.length; i++) {
-				vendeurs[i] = etalsProduit[i].getVendeur();
-			}
-		}
-		return vendeurs;
+	    Etal[] etalsProduit = marche.trouverEtals(produit);
+	    StringBuilder vendeurs = new StringBuilder();
+	    
+	    if (etalsProduit == null || etalsProduit.length == 0) {
+	        return "Il n'y a pas de vendeur qui propose " + produit + " au marché.";
+	    } else {
+	        vendeurs.append("Les vendeurs qui proposent ").append(produit).append(" sont :\n");
+	        for (Etal etal : etalsProduit) {
+	            Gaulois vendeur = etal.getVendeur();
+	            if (vendeur != null) {
+	                vendeurs.append("- ").append(vendeur.getNom()).append("\n");
+	            }
+	        }
+	    }
+	    return vendeurs.toString();
 	}
+
 
 	public Etal rechercherEtal(Gaulois vendeur) {
 		return marche.trouverVendeur(vendeur);
