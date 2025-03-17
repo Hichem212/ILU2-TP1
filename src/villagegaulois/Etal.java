@@ -80,7 +80,7 @@ public class Etal {
 	    if (isEtalOccupe()) {
 	        return getVendeur().getNom() + " vend " + getQuantite() + " " + getProduit();
 	    } else {
-	        return "Cet étal est vide.";
+	        return "Cet Ã©tal est vide.";
 	    }
 	}
 
